@@ -40,6 +40,7 @@ class CongratulationsDialog extends StatelessWidget {
           EnterButtonIntent: CallbackAction(onInvoke: (i) {
             gameState.reset();
             if (!kIsWeb) mqttService.publishLottery();
+            if (!kIsWeb) mqttService.publishWin();
             Navigator.of(context).pushNamedAndRemoveUntil(
               '/',
               (route) => false,
@@ -48,6 +49,7 @@ class CongratulationsDialog extends StatelessWidget {
           }),
           EscapeButtonIntent: CallbackAction(onInvoke: (i) {
             gameState.reset();
+            if (!kIsWeb) mqttService.publishWin();
             Navigator.of(context).pushNamedAndRemoveUntil(
               '/',
               (route) => false,
@@ -123,8 +125,9 @@ class CongratulationsDialog extends StatelessWidget {
                                   MaterialStateProperty.all(Colors.transparent),
                             ),
                             onPressed: () {
+                              if (!kIsWeb) mqttService.publishLottery();
+                              if (!kIsWeb) mqttService.publishWin();
                               gameState.reset();
-                              // TODO mqtt message
                               Navigator.of(context).pushNamedAndRemoveUntil(
                                 '/',
                                 (route) => false,
@@ -160,6 +163,7 @@ class CongratulationsDialog extends StatelessWidget {
                             ),
                             onPressed: () {
                               gameState.reset();
+                              if (!kIsWeb) mqttService.publishWin();
                               Navigator.of(context).pushNamedAndRemoveUntil(
                                 '/',
                                 (route) => false,

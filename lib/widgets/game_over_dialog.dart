@@ -123,7 +123,7 @@ class GameOverDialog extends StatelessWidget {
                             ),
                             onPressed: () {
                               gameState.reset();
-                              // TODO mqtt message
+                              if (!kIsWeb) mqttService.publishLottery();
                               Navigator.of(context).pushNamedAndRemoveUntil(
                                 '/',
                                 (route) => false,
