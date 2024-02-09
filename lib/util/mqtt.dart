@@ -69,11 +69,11 @@ class MqttService {
               0,
               recMess.payload.message.length));
         }
-      });
 
-      client.published?.listen((MqttPublishMessage message) {
-        debugPrint(
-            "MQTT::Published: ${message.variableHeader!.topicName} ${message.payload.message}");
+        if (c[0].topic.startsWith("cardreader/result")) {
+          gameState.setTextResult(MqttPublishPayload.bytesToStringAsString(
+              recMess.payload.message));
+        }
       });
 
       await registerEvents();
@@ -124,6 +124,7 @@ class MqttService {
     client.subscribe("cardreader/active", MqttQos.atLeastOnce);
     client.subscribe("cardreader/image/raw", MqttQos.atLeastOnce);
     client.subscribe("cardreader/image/processed", MqttQos.atLeastOnce);
+    client.subscribe("cardreader/result", MqttQos.atLeastOnce);
     await MqttUtilities.asyncSleep(1);
   }
 }

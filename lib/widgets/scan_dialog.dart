@@ -32,11 +32,14 @@ class _ScanDialogState extends State<ScanDialog> {
 
   void _listener() {
     if (!_state.scanOn) {
-      _state.reset();
-      Navigator.of(context).pushNamedAndRemoveUntil(
-        '/',
-        (route) => false,
-      );
+      _state.removeListener(_listener);
+      Future.delayed(const Duration(seconds: 2), () {
+        _state.reset();
+        Navigator.of(context).pushNamedAndRemoveUntil(
+          '/',
+          (route) => false,
+        );
+      });
     }
 
     setState(() {});
@@ -51,21 +54,21 @@ class _ScanDialogState extends State<ScanDialog> {
     if (!_state.hasLastScanProc) {
       procChild = LoadingAnimationWidget.fourRotatingDots(
         color: const Color.fromARGB(178, 0x81, 0xc7, 0x84),
-        size: MediaQuery.of(context).size.height * 0.1,
+        size: MediaQuery.of(context).size.width * 0.15,
       );
     } else {
       procChild = Image.memory(_state.lastScanProc,
-          height: MediaQuery.of(context).size.height * 0.2, fit: BoxFit.fill);
+          height: MediaQuery.of(context).size.width * 0.15, fit: BoxFit.fill);
     }
 
     if (!_state.hasLastScanRaw) {
       rawChild = LoadingAnimationWidget.fourRotatingDots(
         color: const Color.fromARGB(178, 0x81, 0xc7, 0x84),
-        size: MediaQuery.of(context).size.height * 0.1,
+        size: MediaQuery.of(context).size.width * 0.15,
       );
     } else {
       rawChild = Image.memory(_state.lastScanRaw,
-          height: MediaQuery.of(context).size.height * 0.2, fit: BoxFit.fill);
+          height: MediaQuery.of(context).size.width * 0.15, fit: BoxFit.fill);
     }
 
     return Focus(
@@ -95,9 +98,23 @@ class _ScanDialogState extends State<ScanDialog> {
                             height: MediaQuery.of(context).size.height * 0.3,
                             fit: BoxFit.fill),
                         const SizedBox(height: 20),
-                        rawChild,
-                        const SizedBox(height: 20),
-                        procChild,
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              rawChild,
+                              const SizedBox(width: 20),
+                              procChild,
+                              const SizedBox(width: 20),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.15,
+                                child: Text(
+                                  _state.lastTextResult,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: textStyle.copyWith(
+                                      fontSize: 16, color: Colors.white),
+                                ),
+                              ),
+                            ])
                       ],
                     )))));
   }

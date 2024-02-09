@@ -14,6 +14,7 @@ class GameState extends ChangeNotifier {
   int _lifes = 3;
   Uint8List _lastScanRaw = Uint8List(0);
   Uint8List _lastScanProc = Uint8List(0);
+  String _lastTextResult = "";
   bool _scanOn = false;
   bool _pacManWithPower = false;
 
@@ -22,6 +23,7 @@ class GameState extends ChangeNotifier {
   int get lifes => _lifes;
   Uint8List get lastScanRaw => _lastScanRaw;
   Uint8List get lastScanProc => _lastScanProc;
+  String get lastTextResult => _lastTextResult;
 
   bool get hasLastScanRaw => _lastScanRaw.isNotEmpty;
   bool get hasLastScanProc => _lastScanProc.isNotEmpty;
@@ -39,6 +41,11 @@ class GameState extends ChangeNotifier {
 
   void setScanImageProc(Uint8List inp) {
     _lastScanProc = inp;
+    notifyListeners();
+  }
+
+  void setTextResult(String inp) {
+    _lastTextResult = inp;
     notifyListeners();
   }
 
