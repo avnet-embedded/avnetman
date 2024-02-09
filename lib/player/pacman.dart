@@ -26,7 +26,7 @@ class PacMan extends SimplePlayer
   late GameState _gameState;
   async.Timer? _debounceSound;
 
-final textBubble = const Text('Ready for business!',
+  final textBubble = const Text('Ready for business!',
       style: TextStyle(
           inherit: false,
           fontSize: 60.0,
@@ -93,7 +93,8 @@ final textBubble = const Text('Ready for business!',
   void onMount() {
     _gameState = BonfireInjector.instance.get();
     _gameState.listenChangePower(_pacManChangePower);
-    gameRef.camera.moveToTargetAnimated(gameRef.camera.target!, zoom: gameRef.camera.zoom - 0.2);
+    gameRef.camera.moveToTargetAnimated(gameRef.camera.target!,
+        zoom: gameRef.camera.zoom - 0.2);
     super.onMount();
   }
 
@@ -105,9 +106,12 @@ final textBubble = const Text('Ready for business!',
         target: this,
         child: textBubble
             .animate()
-            .fadeIn(duration: Duration(seconds: 1)).then()
-            .shimmer(duration: Duration(seconds: 8)).shakeX(duration: Duration(seconds: 8), hz: 0.5, amount: 10.0).then()
-            .fadeOut(duration: Duration(seconds: 1)),
+            .fadeIn(duration: const Duration(seconds: 1))
+            .then()
+            .shimmer(duration: const Duration(seconds: 8))
+            .shakeX(duration: const Duration(seconds: 8), hz: 0.5, amount: 10.0)
+            .then()
+            .fadeOut(duration: const Duration(seconds: 1)),
         align: const Offset(-40.0, -40.0),
       );
     } else {
@@ -136,7 +140,8 @@ final textBubble = const Text('Ready for business!',
       onFinish: () {
         if (_gameState.lifes == 0) {
           async.Future.delayed(Duration.zero, () {
-            gameRef.camera.moveToTargetAnimated(gameRef.camera.target!, zoom: 0.00001);
+            gameRef.camera
+                .moveToTargetAnimated(gameRef.camera.target!, zoom: 0.00001);
             GameOverDialog.show(context);
             removeFromParent();
           });
@@ -153,9 +158,10 @@ final textBubble = const Text('Ready for business!',
 
   void _checkIfWinner(double dt) {
     if (checkInterval('winner', 1000, dt) && !youAreWinner) {
-      bool winner =  gameRef.componentsByType<Dot>().isEmpty;
+      bool winner = gameRef.componentsByType<Dot>().isEmpty;
       if (winner) {
-        gameRef.camera.moveToTargetAnimated(gameRef.camera.target!, zoom: 0.00001);
+        gameRef.camera
+            .moveToTargetAnimated(gameRef.camera.target!, zoom: 0.00001);
         youAreWinner = true;
         FollowerWidget.remove('textBubble');
         CongratulationsDialog.show(context);
