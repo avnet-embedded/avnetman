@@ -1,3 +1,4 @@
+import 'package:avnetman/widgets/scan_dialog.dart';
 import 'package:bonfire/state_manager/bonfire_injector.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -41,10 +42,7 @@ class CongratulationsDialog extends StatelessWidget {
             gameState.reset();
             if (!kIsWeb) mqttService.publishLottery();
             if (!kIsWeb) mqttService.publishWin();
-            Navigator.of(context).pushNamedAndRemoveUntil(
-              '/',
-              (route) => false,
-            );
+            ScanDialog.show(context);
             return null;
           }),
           EscapeButtonIntent: CallbackAction(onInvoke: (i) {
@@ -108,7 +106,8 @@ class CongratulationsDialog extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          SizedBox(width: MediaQuery.of(context).size.width * 0.01),
+                          SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.01),
                           ElevatedButton.icon(
                             style: ButtonStyle(
                               padding: MaterialStateProperty.all(
@@ -128,21 +127,19 @@ class CongratulationsDialog extends StatelessWidget {
                               if (!kIsWeb) mqttService.publishLottery();
                               if (!kIsWeb) mqttService.publishWin();
                               gameState.reset();
-                              Navigator.of(context).pushNamedAndRemoveUntil(
-                                '/',
-                                (route) => false,
-                              );
+                              ScanDialog.show(context);
                             },
                             icon: Image.asset('assets/images/button_blue.png',
-                                height: MediaQuery.of(context).size.height * 0.1,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.1,
                                 fit: BoxFit.fill),
                             label: Text(
                               'Yes!',
                               style: textStyle.copyWith(
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold,
-                                  fontSize:
-                                      MediaQuery.of(context).size.height * 0.05),
+                                  fontSize: MediaQuery.of(context).size.height *
+                                      0.05),
                             ),
                           ),
                           const SizedBox(width: 50),
@@ -170,13 +167,15 @@ class CongratulationsDialog extends StatelessWidget {
                               );
                             },
                             icon: Image.asset('assets/images/button_red.png',
-                                height: MediaQuery.of(context).size.height * 0.1,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.1,
                                 fit: BoxFit.fill),
                             label: Text('Maybe later!',
                                 style: textStyle.copyWith(
                                     color: Colors.red,
                                     fontSize:
-                                        MediaQuery.of(context).size.height * 0.05)),
+                                        MediaQuery.of(context).size.height *
+                                            0.05)),
                           ),
                         ],
                       )

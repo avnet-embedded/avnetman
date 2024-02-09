@@ -1,3 +1,4 @@
+import 'package:avnetman/widgets/scan_dialog.dart';
 import 'package:bonfire/state_manager/bonfire_injector.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -39,10 +40,7 @@ class GameOverDialog extends StatelessWidget {
           EnterButtonIntent: CallbackAction(onInvoke: (i) {
             gameState.reset();
             if (!kIsWeb) mqttService.publishLottery();
-            Navigator.of(context).pushNamedAndRemoveUntil(
-              '/',
-              (route) => false,
-            );
+            ScanDialog.show(context);
             return null;
           }),
           EscapeButtonIntent: CallbackAction(onInvoke: (i) {
@@ -105,7 +103,8 @@ class GameOverDialog extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          SizedBox(width: MediaQuery.of(context).size.width * 0.01),
+                          SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.01),
                           ElevatedButton.icon(
                             style: ButtonStyle(
                               padding: MaterialStateProperty.all(
@@ -116,18 +115,15 @@ class GameOverDialog extends StatelessWidget {
                               side: MaterialStateProperty.all(
                                 const BorderSide(color: Colors.transparent),
                               ),
-                              backgroundColor: MaterialStateProperty.all(
-                                  Colors.transparent),
-                              shadowColor: MaterialStateProperty.all(
-                                  Colors.transparent),
+                              backgroundColor:
+                                  MaterialStateProperty.all(Colors.transparent),
+                              shadowColor:
+                                  MaterialStateProperty.all(Colors.transparent),
                             ),
                             onPressed: () {
                               gameState.reset();
                               if (!kIsWeb) mqttService.publishLottery();
-                              Navigator.of(context).pushNamedAndRemoveUntil(
-                                '/',
-                                (route) => false,
-                              );
+                              ScanDialog.show(context);
                             },
                             icon: Image.asset('assets/images/button_blue.png',
                                 height:
@@ -138,9 +134,8 @@ class GameOverDialog extends StatelessWidget {
                               style: textStyle.copyWith(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
-                                  fontSize:
-                                      MediaQuery.of(context).size.height *
-                                          0.05),
+                                  fontSize: MediaQuery.of(context).size.height *
+                                      0.05),
                             ),
                           ),
                           const SizedBox(width: 50),
@@ -154,10 +149,10 @@ class GameOverDialog extends StatelessWidget {
                               side: MaterialStateProperty.all(
                                 const BorderSide(color: Colors.transparent),
                               ),
-                              backgroundColor: MaterialStateProperty.all(
-                                  Colors.transparent),
-                              shadowColor: MaterialStateProperty.all(
-                                  Colors.transparent),
+                              backgroundColor:
+                                  MaterialStateProperty.all(Colors.transparent),
+                              shadowColor:
+                                  MaterialStateProperty.all(Colors.transparent),
                             ),
                             onPressed: () {
                               gameState.reset();
@@ -177,8 +172,7 @@ class GameOverDialog extends StatelessWidget {
                                         MediaQuery.of(context).size.height *
                                             0.05)),
                           ),
-                        ]
-                      ),
+                        ]),
                   ],
                 ),
               ),

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:avnetman/enemy/ghost_spritesheet.dart';
@@ -11,10 +12,35 @@ class GameState extends ChangeNotifier {
 
   int _score = 0;
   int _lifes = 3;
+  Uint8List _lastScanRaw = Uint8List(0);
+  Uint8List _lastScanProc = Uint8List(0);
+  bool _scanOn = false;
   bool _pacManWithPower = false;
+
   bool get pacManWithPower => _pacManWithPower;
   int get score => _score;
   int get lifes => _lifes;
+  Uint8List get lastScanRaw => _lastScanRaw;
+  Uint8List get lastScanProc => _lastScanProc;
+
+  bool get hasLastScanRaw => _lastScanRaw.isNotEmpty;
+  bool get hasLastScanProc => _lastScanProc.isNotEmpty;
+  bool get scanOn => _scanOn;
+
+  void setScanStatus(bool status) {
+    _scanOn = status;
+    notifyListeners();
+  }
+
+  void setScanImageRaw(Uint8List inp) {
+    _lastScanRaw = inp;
+    notifyListeners();
+  }
+
+  void setScanImageProc(Uint8List inp) {
+    _lastScanProc = inp;
+    notifyListeners();
+  }
 
   void incrementScore({int value = 10}) {
     _score += value;
@@ -56,6 +82,9 @@ class GameState extends ChangeNotifier {
   void reset() {
     _score = 0;
     _lifes = 3;
+    _lastScanProc = Uint8List(0);
+    _lastScanRaw = Uint8List(0);
+    _scanOn = false;
     onChangePowerObserves.clear();
     _powerTimer.cancel();
     GhostSpriteSheet.reshuffle();
