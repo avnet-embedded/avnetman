@@ -33,7 +33,7 @@ class _ScanDialogState extends State<ScanDialog> {
   void _listener() {
     if (!_state.scanOn) {
       _state.removeListener(_listener);
-      Future.delayed(const Duration(seconds: 2), () {
+      Future.delayed(const Duration(seconds: 5), () {
         _state.reset();
         Navigator.of(context).pushNamedAndRemoveUntil(
           '/',
