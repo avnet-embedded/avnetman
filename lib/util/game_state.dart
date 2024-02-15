@@ -92,6 +92,7 @@ class GameState extends ChangeNotifier {
     _lastScanProc = Uint8List(0);
     _lastScanRaw = Uint8List(0);
     _scanOn = false;
+    _lastTextResult = "";
     onChangePowerObserves.clear();
     _powerTimer.cancel();
     GhostSpriteSheet.reshuffle();
