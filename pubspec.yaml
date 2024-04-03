@@ -30,11 +30,12 @@ dependencies:
   flutter:
     sdk: flutter
 
-  bonfire: ^2.12.6
+  bonfire: 2.12.6
   flame_audio: ^2.0.0
   mqtt_client: ^9.7.3
   flutter_animate: ^4.3.0
   loading_animation_widget: ^1.2.0
+  a_star_algorithm: 0.3.0
 
 dev_dependencies:
   flutter_test:
