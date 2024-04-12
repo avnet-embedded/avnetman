@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:avnetman/widgets/scan_dialog.dart';
 import 'package:bonfire/state_manager/bonfire_injector.dart';
 import 'package:flutter/foundation.dart';
@@ -30,6 +32,14 @@ class GameOverDialog extends StatelessWidget {
     AppConfig config = AppConfig();
     config.read(context);
     TextStyle textStyle = const TextStyle(color: Colors.black);
+
+    Timer _autoclose = Timer(const Duration(seconds: 30), () {
+      Navigator.of(context).pushNamedAndRemoveUntil(
+        '/',
+        (route) => false,
+      );
+    });
+
     return Shortcuts(
       shortcuts: {
         LogicalKeySet(LogicalKeyboardKey.enter): EnterButtonIntent(),
@@ -39,12 +49,14 @@ class GameOverDialog extends StatelessWidget {
         actions: {
           EnterButtonIntent: CallbackAction(onInvoke: (i) {
             gameState.reset();
+            _autoclose.cancel();
             if (!kIsWeb) mqttService.publishLottery();
             ScanDialog.show(context);
             return null;
           }),
           EscapeButtonIntent: CallbackAction(onInvoke: (i) {
             gameState.reset();
+            _autoclose.cancel();
             Navigator.of(context).pushNamedAndRemoveUntil(
               '/',
               (route) => false,
@@ -122,6 +134,7 @@ class GameOverDialog extends StatelessWidget {
                             ),
                             onPressed: () {
                               gameState.reset();
+                              _autoclose.cancel();
                               if (!kIsWeb) mqttService.publishLottery();
                               ScanDialog.show(context);
                             },
@@ -156,6 +169,7 @@ class GameOverDialog extends StatelessWidget {
                             ),
                             onPressed: () {
                               gameState.reset();
+                              _autoclose.cancel();
                               Navigator.of(context).pushNamedAndRemoveUntil(
                                 '/',
                                 (route) => false,
