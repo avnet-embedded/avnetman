@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:avnetman/widgets/scan_dialog.dart';
 import 'package:bonfire/state_manager/bonfire_injector.dart';
 import 'package:flutter/foundation.dart';
@@ -31,6 +33,14 @@ class CongratulationsDialog extends StatelessWidget {
     config.read(context);
     final GameState gameState = BonfireInjector.instance.get();
     TextStyle textStyle = const TextStyle(color: Colors.black);
+
+    Timer _autoclose = Timer(const Duration(seconds: 30), () {
+      Navigator.of(context).pushNamedAndRemoveUntil(
+        '/',
+        (route) => false,
+      );
+    });
+
     return Shortcuts(
       shortcuts: {
         LogicalKeySet(LogicalKeyboardKey.enter): EnterButtonIntent(),
@@ -40,6 +50,7 @@ class CongratulationsDialog extends StatelessWidget {
         actions: {
           EnterButtonIntent: CallbackAction(onInvoke: (i) {
             gameState.reset();
+            _autoclose.cancel();
             if (!kIsWeb) mqttService.publishLottery();
             if (!kIsWeb) mqttService.publishWin();
             ScanDialog.show(context);
@@ -47,6 +58,7 @@ class CongratulationsDialog extends StatelessWidget {
           }),
           EscapeButtonIntent: CallbackAction(onInvoke: (i) {
             gameState.reset();
+            _autoclose.cancel();
             if (!kIsWeb) mqttService.publishWin();
             Navigator.of(context).pushNamedAndRemoveUntil(
               '/',
@@ -127,6 +139,7 @@ class CongratulationsDialog extends StatelessWidget {
                               if (!kIsWeb) mqttService.publishLottery();
                               if (!kIsWeb) mqttService.publishWin();
                               gameState.reset();
+                              _autoclose.cancel();
                               ScanDialog.show(context);
                             },
                             icon: Image.asset('assets/images/button_blue.png',
@@ -160,6 +173,7 @@ class CongratulationsDialog extends StatelessWidget {
                             ),
                             onPressed: () {
                               gameState.reset();
+                              _autoclose.cancel();
                               if (!kIsWeb) mqttService.publishWin();
                               Navigator.of(context).pushNamedAndRemoveUntil(
                                 '/',
